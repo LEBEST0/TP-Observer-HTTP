@@ -114,44 +114,12 @@ Paquet **[FIN, ACK]** :
 
 ![FIN, ACK](images/image12.png)
 
-**Schéma du dialogue client-serveur :**
+**Version dessinée du dialogue client – Serveur :**
 
-```mermaid
-sequenceDiagram
-    participant C as Client (localhost)
-    participant S as Serveur
-    Note over C,S: Établissement de la connexion
-    C->>S: [SYN]
-    S->>C: [SYN, ACK]
-    C->>S: [ACK]
-    Note over C,S: Échange HTTP
-    C->>S: GET /TP1_Observer_HTTP/formulaire.php
-    S->>C: HTTP/1.1 200 OK
-    Note over C,S: Fermeture de la connexion
-    S->>C: [FIN, ACK]
-    C->>S: [ACK]
-```
 
-Version texte, si le schéma ne s'affiche pas :
+![Dialogue client-serveur](images/Com_illustree.png)
 
-```
-   CLIENT (localhost)                     SERVEUR
-        |                                    |
-        |  ---- ÉTABLISSEMENT ----           |
-        |-------------- [SYN] -------------->|
-        |<----------- [SYN, ACK] ------------|
-        |-------------- [ACK] -------------->|
-        |                                    |
-        |  ---- ÉCHANGE HTTP ----            |
-        |-------------- GET ---------------->|
-        |<--------- 200 OK ------------------|
-        |                                    |
-        |  ---- FERMETURE ----               |
-        |<---------- [FIN, ACK] -------------|
-        |-------------- [ACK] -------------->|
-```
 
-C'est le serveur qui ferme la connexion (paquet 15, port 80 → 51916), environ 5 secondes après la dernière réponse. Il a gardé la connexion ouverte (*keep-alive*) au cas où le navigateur enverrait d'autres requêtes, puis l'a fermée faute d'activité. Le client confirme avec un `[ACK]` (paquet 16).
 
 ### Étape 6 : Suivre le flux
 
@@ -192,7 +160,7 @@ Parce que chaque requête est traitée seule : le serveur ne se souvient pas des
 
 **2. Où se trouvent les données d'un formulaire envoyé en GET ? En POST ? L'une des deux est-elle sûre sans HTTPS ?**
 
-En GET, elles sont dans l'URL (`formulaire.php?nom=...`). En POST, elles sont dans le corps de la requête. Aucune des deux n'est sûre sans HTTPS : POST les cache seulement de la barre d'adresse, mais on les a lues en clair dans Wireshark à l'étape 7.
+En GET, elles sont dans l'URL (`formulaire.php?nom=...`). En POST, elles sont dans le corps de la requête. Aucune des deux n'est sûre sans HTTPS : POST les cache seulement de la barre d'adresse, mais on peut les lire en clair dans Wireshark .
 
 **3. Que contient la réponse à une requête `HEAD` ?**
 
